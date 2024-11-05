@@ -3,6 +3,7 @@ from flask import Flask, Response, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 import json
 import paho.mqtt.client as mqtt
+import os
 
 # ********************* CONEXÃO BANCO DE DADOS *********************************
 
@@ -10,7 +11,25 @@ app = Flask('registro')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Configura o SQLAlchemy para rastrear modificações dos objetos, o que não é recomendado para produção.
 # O SQLAlchemy cria e modifica todos os dados da nossa tabela de forma automatica 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:senai%40134@127.0.0.1/medidor'
+
+
+# Configuração do servidor
+server_name = 'projetointegradorbanco.mysql.database.azure.com'
+username = 'jessica'
+password = 'senai%40134'
+database = 'medidor'
+
+
+# Caminho para o certificado CA (neste exemplo, assumindo que está no diretório raiz do projeto)
+ca_certificate_path = 'DigiCertGlobalRootCA.crt.pem'
+
+# Construção da URI com SSL
+uri = f"mysql://{username}:{password}@{server_name}:3306/{database}"
+ssl_options = f"?ssl_ca={ca_certificate_path}"
+
+app.config['SQLALCHEMY_DATABASE_URI'] = uri + ssl_options
+
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://jessica:senai%40134@projetointegradorbanco.mysql.database.azure.com/medidor'
 # Configura a URI de conexão com o banco de dados MySQL.
 # Senha -> senai@134, porém aqui a senha passa a ser -> senai%40134
 app.config['SQLALCHEMY_ECHO'] = True  # Habilita o log de SQLAlchemy
@@ -229,7 +248,7 @@ def gera_response(status, nome_do_conteudo, conteudo, mensagem=False):  # Define
 
 if __name__ == '__main__':  # Verifica se este arquivo está sendo executado como o programa principal.
     with app.app_context():  # Cria um contexto de aplicativo Flask para executar a criação do banco de dados.
-        mybd.create_all()  # Chama o método 'create_all' para criar todas as tabelas definidas no modelo do banco de dados.
+        # mybd.create_all()  # Chama o método 'create_all' para criar todas as tabelas definidas no modelo do banco de dados.
     
-    start_mqtt()  # Chama a função 'start_mqtt', que presumivelmente inicia um cliente MQTT (protocolo de mensagens para dispositivos).
-    app.run(port=5000, host='localhost', debug=True)  # Inicia o servidor Flask, ouvindo na porta 5000 e permitindo depuração.
+        start_mqtt()  # Chama a função 'start_mqtt', que presumivelmente inicia um cliente MQTT (protocolo de mensagens para dispositivos).
+        app.run(port=5000, host='localhost', debug=True)  # Inicia o servidor Flask, ouvindo na porta 5000 e permitindo depuração.
