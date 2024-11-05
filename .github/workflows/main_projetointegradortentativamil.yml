@@ -58,7 +58,9 @@ jobs:
 
       - name: Unzip artifact for deployment
         run: unzip release.zip
-
+        
+      - name: Set startup file for Azure App Service
+        run: echo 'python main.py' > startup.txt
       
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
