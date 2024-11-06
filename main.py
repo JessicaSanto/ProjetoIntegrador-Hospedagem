@@ -16,7 +16,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Configuração do servidor
 server_name = 'projetointegradorbanco.mysql.database.azure.com'
 username = 'jessica'
-password = 'senai%40134'
+password = 'senai@134'
 database = 'medidor'
 
 
