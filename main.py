@@ -15,6 +15,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Configuração do servidor
 server_name = 'projetointegradorbanco.mysql.database.azure.com'
+port='3306'
 username = 'jessica'
 password = 'senai%40134'
 database = 'medidor'
@@ -120,6 +121,19 @@ class Registro(mybd.Model):
     co2 = mybd.Column(mybd.Numeric(10, 2))
     tempo_registro = mybd.Column(mybd.DateTime)
     
+    def to_json(self):# Define um método 'to_json' que será usado para converter um objeto em um dicionário JSON.
+        return {  # Inicia a construção do dicionário que representará os dados em formato JSON.
+            "id": self.id,
+            "temperatura": float(self.temperatura),
+            "pressao": float(self.pressao),
+            "altitude": float(self.altitude),
+            "umidade": float(self.umidade),
+            "co2": float(self.co2),
+            "tempo_registro": self.tempo_registro.strftime('%Y-%m-%d %H:%M:%S') if self.tempo_registro else None 
+            # Verifica se 'tempo_registro' existe. Se existir, converte para uma string no formato 'YYYY-MM-DD HH:MM:SS';
+            # caso contrário, adiciona None ao dicionário.
+        }
+
     
 # ********************************************************************************************************
 
@@ -128,18 +142,6 @@ class Registro(mybd.Model):
 def get_data(): # Define a função 'get_data' que será chamada quando a rota '/data' for acessada.
     return jsonify(mqtt_data)  # Retorna os dados 'mqtt_data' em formato JSON. O jsonify converte um dicionário Python em JSON.
 
-def to_json(self):# Define um método 'to_json' que será usado para converter um objeto em um dicionário JSON.
-    return {  # Inicia a construção do dicionário que representará os dados em formato JSON.
-        "id": self.id,
-        "temperatura": float(self.temperatura),
-        "pressao": float(self.pressao),
-        "altitude": float(self.altitude),
-        "umidade": float(self.umidade),
-        "co2": float(self.co2),
-        "tempo_registro": self.tempo_registro.strftime('%Y-%m-%d %H:%M:%S') if self.tempo_registro else None 
-        # Verifica se 'tempo_registro' existe. Se existir, converte para uma string no formato 'YYYY-MM-DD HH:MM:SS';
-        # caso contrário, adiciona None ao dicionário.
-    }
 
 # **********************************************************************************
 
