@@ -1,12 +1,11 @@
 # pip install mysql-connector-python
 # pip install streamlit
-import mysql.connector 
-import pymysql
+import mysql.connector
 import pandas as pd
 
 # Conexão
 def get_mysql_data(query):
-    conn = pymysql.connect(
+    conn = mysql.connector.connect(
         host="projetointegradorbanco.mysql.database.azure.com",
         port="3306",
         user="jessica",
