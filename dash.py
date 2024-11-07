@@ -36,7 +36,7 @@ x_axis = st.sidebar.selectbox(
 y_axis = st.sidebar.selectbox(
 # Cria uma caixa de seleção semelhante para o eixo Y.
     "Eixo Y",
-    options=["umidade", "temperatura", "pressao", "altitude", "co2"],
+    options=["umidade", "temperatura", "pressao", "altitude", "co2", "poeira1", "poeira2"],
 #  Lista de opções que o usuário pode selecionar.
     index=1
 # Define a opção selecionada por padrão (0 = primeira opção, 1 = segunda opção, etc.).
@@ -106,6 +106,15 @@ if filtros("co2"):
         value=(float(df["co2"].min()), float(df["co2"].max())),
         step=1.0
     )
+    
+if filtros("poeira1"):
+    poeira1_range = st.sidebar.slider(
+        "Poeira (ppm)",
+        min_value=float(df["poeira1"].min()),
+        max_value=float(df["poeira1"].max()),
+        value=(float(df["poeira1"].min()), float(df["poeira1"].max())),
+        step=1.0
+    )
 # Exibe um controle deslizante para filtrar o CO2.
 
 # Filtragem do DataFrame com base nos intervalos selecionados na sidebar
@@ -151,6 +160,12 @@ if filtros("co2"):
     df_selection = df_selection[
         (df_selection["co2"] >= co2_range[0]) & 
         (df_selection["co2"] <= co2_range[1])
+    ]
+    
+if filtros("poeira1"):
+    df_selection = df_selection[
+        (df_selection["poeira1"] >= poeira1_range[0]) & 
+        (df_selection["poeira1"] <= poeira1_range[1])
     ]
 # Filtra os dados com base no intervalo selecionado para o CO2, se aplicável.
 
@@ -341,7 +356,7 @@ def graphs():
             return chart_data
 
         # Lista de colunas que serão incluídas no gráfico
-        columns = ["temperatura", "umidade", "co2", "altitude", "pressao"]
+        columns = ["temperatura", "umidade", "co2", "altitude", "pressao", "poeira1", "poeira2"]
         chart_data = prepare_chart_data(df_selection, columns)
 
         # Verifica se há dados para exibir

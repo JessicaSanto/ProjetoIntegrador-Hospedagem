@@ -69,6 +69,8 @@ def on_message(client, userdata, msg):
             altitude = mqtt_data.get('altitude')
             umidade = mqtt_data.get('humidity')
             co2 = mqtt_data.get('CO2')
+            poeira1 = mqtt_data.get('particula1')
+            poeira2 = mqtt_data.get('particula2')
             timestamp_unix = mqtt_data.get('timestamp')
 
             if timestamp_unix is None:
@@ -88,7 +90,9 @@ def on_message(client, userdata, msg):
                 pressao=pressao,
                 altitude=altitude,
                 umidade=umidade,
-                co2=0,
+                co2=co2,
+                poeira1=poeira1,
+                poeira2=poeira2,
                 tempo_registro=timestamp
             )
 
@@ -118,6 +122,8 @@ class Registro(mybd.Model):
     altitude = mybd.Column(mybd.Numeric(10, 2))
     umidade = mybd.Column(mybd.Numeric(10, 2))
     co2 = mybd.Column(mybd.Numeric(10, 2))
+    poeira1 = mybd.Column(mybd.Numeric(10, 2))
+    poeira2 = mybd.Column(mybd.Numeric(10, 2))
     tempo_registro = mybd.Column(mybd.DateTime)
     
     def to_json(self):# Define um método 'to_json' que será usado para converter um objeto em um dicionário JSON.
@@ -128,6 +134,8 @@ class Registro(mybd.Model):
             "altitude": float(self.altitude),
             "umidade": float(self.umidade),
             "co2": float(self.co2),
+            "poeira1": float(self.poeira1),
+            "poeira2": float(self.poeira2),
             "tempo_registro": self.tempo_registro.strftime('%Y-%m-%d %H:%M:%S') if self.tempo_registro else None 
             # Verifica se 'tempo_registro' existe. Se existir, converte para uma string no formato 'YYYY-MM-DD HH:MM:SS';
             # caso contrário, adiciona None ao dicionário.
@@ -182,6 +190,8 @@ def post_data():
         altitude = data.get('altitude')
         umidade = data.get('umidade')
         co2 = data.get('co2')
+        poeira1 = data.get('particula1')
+        poeira2 = data.get('particula2')
         timestamp_unix = data.get('tempo_registro')
 
         # Converte timestamp Unix para datetime
@@ -198,6 +208,8 @@ def post_data():
             altitude=altitude,
             umidade=umidade,
             co2=co2,
+            poeira1=poeira1,
+            poeira2=poeira2,
             tempo_registro=timestamp
         )
 
