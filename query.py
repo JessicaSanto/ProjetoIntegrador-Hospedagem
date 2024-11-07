@@ -1,11 +1,13 @@
 # pip install mysql-connector-python
 # pip install streamlit
 import mysql.connector
+import mariadb
+
 import pandas as pd
 
 # Conexão
 def get_mysql_data(query):
-    conn = mysql.connector.connect(
+    conn = mariadb.connect(
         host="projetointegradorbanco.mysql.database.azure.com",
         port="3306",
         user="jessica",
