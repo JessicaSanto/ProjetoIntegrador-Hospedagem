@@ -4,6 +4,7 @@ import streamlit as st
 import pandas as pd
 #  Importa o Pandas, uma biblioteca para manipulação e análise de dados.
 import plotly.express as px
+import plotly
 # Importa o Plotly Express, uma biblioteca para criação de gráficos interativos.
 from query import *
 # Importa todas as funções e variáveis do módulo query, que pode incluir a função view_all_data() usada para obter dados de uma API.
