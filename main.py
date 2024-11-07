@@ -109,7 +109,6 @@ mqtt_client.connect("test.mosquitto.org", 1883, 60)
 def start_mqtt():
     mqtt_client.loop_start()
     
-    
 
 class Registro(mybd.Model):
     __tablename__ = 'registro'

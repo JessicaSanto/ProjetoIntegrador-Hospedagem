@@ -12,7 +12,7 @@ def get_mysql_data(query):
         password="senai@134",
         db="medidor"
         )
-
+    
     dataframe = pd.read_sql(query, conn)
 
     # Fechar a conexão
